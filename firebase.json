@@ -1,0 +1,6 @@
+{
+  "firestore": {
+    "rules": "password-manager",
+    "indexes": "firestore.indexes.json"
+  }
+}

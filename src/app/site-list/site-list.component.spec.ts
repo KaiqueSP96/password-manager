@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SiteListComponent} from "./side-list.component";
+import { SiteListComponent} from "./site-list.component";
 
 describe('SideListComponent', () => {
   let component: SiteListComponent;

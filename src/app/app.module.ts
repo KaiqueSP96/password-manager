@@ -8,7 +8,7 @@ import { environment } from '../environments/environment';
 import { provideAuth,getAuth } from '@angular/fire/auth';
 import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { NavbarComponent } from './navbar/navbar.component';
-import { SideListComponent } from './side-list/side-list.component';
+import { SiteListComponent} from "./side-list/side-list.component";
 import { PasswordListComponent } from './password-list/password-list.component';
 import { LoginComponent } from './login/login.component';
 
@@ -16,7 +16,7 @@ import { LoginComponent } from './login/login.component';
   declarations: [
     AppComponent,
     NavbarComponent,
-    SideListComponent,
+    SiteListComponent,
     PasswordListComponent,
     LoginComponent
   ],

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-side-list',
-  templateUrl: './side-list.component.html',
-  styleUrls: ['./side-list.component.css']
+  selector: 'app-site-list',
+  templateUrl: './site-list.component.html',
+  styleUrls: ['./site-list.component.css']
 })
-export class SideListComponent {
+export class SiteListComponent {
 
 }

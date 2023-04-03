@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc} from "@angular/fire/firestore";
+import { Firestore, collection, addDoc, collectionData} from "@angular/fire/firestore";
 
 @Injectable({
   providedIn: 'root'
@@ -13,4 +13,8 @@ export class PasswordManagerService {
     return addDoc(dbInstance, data)
   }
 
+  loadSites() {
+    const dbInstance = collection(this.firestore,'sites');
+    return collectionData(dbInstance, {idField: 'id'})
+  }
 }

@@ -8,8 +8,8 @@
   <!-- Add new site Form -->
 
   <div class="px-20 py-10 mb-10 my-5 border-4 border-gray-900">
-    <h2 class="text-3xl text-center"> Add new Site </h2>
-    <p class="text-center"> You can add new site from the below form </p>
+    <h2 class="text-3xl text-center"> {{formState}} Site </h2>
+    <p class="text-center"> You can {{formState}} site from the below form </p>
 
     <form #f="ngForm" (ngSubmit)="onSubmit(f.value)">
       <div class="flex flex-col">
@@ -28,7 +28,7 @@
       </div>
 
       <button class="mt-10 mx-0.5 px-5 py-3 text-sm bg-gray-900 text-white shadow rounded-md">
-        Add new Site
+        {{formState}} Site
       </button>
 
       <button class="mt-10 mx-0.5 px-5 py-3 text-sm border-2 border-gray-900 text-gray-900 shadow rounded-md">

@@ -15,19 +15,31 @@ export class SiteListComponent {
   siteImageUrl!: string;
   siteId!: string;
 
+  formState: string = 'Add New';
+
   constructor(private passwordManagerService: PasswordManagerService) {
     this.loadSites();
   }
   onSubmit(values: object) {
-    console.log(values);
-    this.passwordManagerService
-      .addSite(values)
-      .then(() => {
-        console.log('Data save Successfully');
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (this.formState == 'Add New') {
+      this.passwordManagerService
+        .addSite(values)
+        .then(() => {
+          console.log('Data save Successfully');
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if (this.formState == 'Edit') {
+      this.passwordManagerService
+        .updateSite(this.siteId, values)
+        .then(() => {
+          console.log('Data Updated');
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }
 
   loadSites() {
@@ -44,5 +56,7 @@ export class SiteListComponent {
     this.siteURL = siteURL;
     this.siteImageUrl = siteImageUrl;
     this.siteId = id;
+
+    this.formState = 'Edit';
   }
 }

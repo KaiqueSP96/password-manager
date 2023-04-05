@@ -17,15 +17,24 @@ export class SiteListComponent {
 
   formState: string = 'Add New';
 
+  isSuccess: boolean = false;
+  successMessage!: string;
+
   constructor(private passwordManagerService: PasswordManagerService) {
     this.loadSites();
   }
+
+  showAlert(message: string) {
+    this.isSuccess = true;
+    this.successMessage = message;
+  }
+
   onSubmit(values: object) {
     if (this.formState == 'Add New') {
       this.passwordManagerService
         .addSite(values)
         .then(() => {
-          console.log('Data save Successfully');
+          this.showAlert('Data Saved Successfully');
         })
         .catch((err) => {
           console.log(err);
@@ -34,7 +43,7 @@ export class SiteListComponent {
       this.passwordManagerService
         .updateSite(this.siteId, values)
         .then(() => {
-          console.log('Data Updated');
+          this.showAlert('Data Edited Successfully');
         })
         .catch((err) => {
           console.log(err);
@@ -58,5 +67,16 @@ export class SiteListComponent {
     this.siteId = id;
 
     this.formState = 'Edit';
+  }
+
+  deleteSite(id: string) {
+    this.passwordManagerService
+      .deleteSite(id)
+      .then(() => {
+        this.showAlert('Data Deleted Successfully');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 }

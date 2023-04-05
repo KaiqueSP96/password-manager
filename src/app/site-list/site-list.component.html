@@ -5,8 +5,12 @@
     Add new Site
   </button>
 
-  <!-- Add new site Form -->
+  <!-- alerts -->
+  <div *ngIf="isSuccess" class="p-5 my-3 bg-teal-100 text-teal-900">
+    {{ successMessage }}
+  </div>
 
+  <!-- Add new site Form -->
   <div class="px-20 py-10 mb-10 my-5 border-4 border-gray-900">
     <h2 class="text-3xl text-center"> {{formState}} Site </h2>
     <p class="text-center"> You can {{formState}} site from the below form </p>
@@ -56,7 +60,7 @@
         Edit
       </button>
 
-      <button class="my-3 mx-0.5 px-5 py-3 text-sm border-2 border-gray-900 text-gray-900 shadow rounded-md">
+      <button (click)="deleteSite(site.id)" class="my-3 mx-0.5 px-5 py-3 text-sm border-2 border-gray-900 text-gray-900 shadow rounded-md">
         Delete
       </button>
 

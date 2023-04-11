@@ -27,4 +27,13 @@ export class PasswordManagerService {
     const docInstance = doc(this.firestore, 'sites', id);
      return deleteDoc(docInstance);
   }
+
+  //password Queryes
+
+  addPassword (data: object, siteId: string) {
+    const dbInstance = collection(this.firestore, `sites/${siteId}/passwords`);
+    return addDoc(dbInstance, data);
+
+  }
+
 }

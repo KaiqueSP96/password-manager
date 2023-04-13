@@ -1,6 +1,7 @@
 import { PasswordManagerService } from './../password-manager.service';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-password-list',
@@ -13,24 +14,49 @@ export class PasswordListComponent {
   siteURL!: string;
   siteImageUrl!: string;
 
-  constructor(private route: ActivatedRoute, private PasswordManagerService: PasswordManagerService) {
+  passwordList!: Observable<Array<any>>;
+
+  email!: string;
+  username!: string;
+  password!: string;
+  passwordId!: string;
+
+  formState : string = 'Add New'
+
+  constructor(
+    private route: ActivatedRoute,
+    private PasswordManagerService: PasswordManagerService
+  ) {
     this.route.queryParams.subscribe((val: any) => {
       this.siteId = val.id;
       this.siteName = val.siteName;
       this.siteURL = val.siteURL;
       this.siteImageUrl = val.siteImageUrl;
     });
+
+    this.loadPasswords();
   }
 
   onSubmit(values: object) {
     this.PasswordManagerService.addPassword(values, this.siteId)
-    .then(()=>{
-      console.log("Password Saved!");
-    })
-    .catch (err =>{
-      console.log(err);
-    }) 
+      .then(() => {
+        console.log('Password Saved!');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
+  loadPasswords() {
+    this.passwordList = this.PasswordManagerService.loadPasswords(this.siteId);
+  }
 
+  editPassword(email: string, username:string, password: string, passwordId: string) {
+    this.email = email;
+    this.username = username;
+    this.password = password;
+    this.passwordId = passwordId;
+
+    this.formState = 'Edit'
+  }
 }

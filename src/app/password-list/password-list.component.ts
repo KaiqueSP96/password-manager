@@ -21,7 +21,7 @@ export class PasswordListComponent {
   password!: string;
   passwordId!: string;
 
-  formState : string = 'Add New'
+  formState: string = 'Add New';
 
   constructor(
     private route: ActivatedRoute,
@@ -38,25 +38,44 @@ export class PasswordListComponent {
   }
 
   onSubmit(values: object) {
-    this.PasswordManagerService.addPassword(values, this.siteId)
-      .then(() => {
-        console.log('Password Saved!');
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (this.formState == 'Add New') {
+      this.PasswordManagerService.addPassword(values, this.siteId)
+        .then(() => {
+          console.log('Password Saved!');
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if (this.formState == 'Edit') {
+      this.PasswordManagerService.updatePassword(
+        this.siteId,
+        this.passwordId,
+        values
+      )
+        .then(() => {
+          console.log('Data Updated');
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }
 
   loadPasswords() {
     this.passwordList = this.PasswordManagerService.loadPasswords(this.siteId);
   }
 
-  editPassword(email: string, username:string, password: string, passwordId: string) {
+  editPassword(
+    email: string,
+    username: string,
+    password: string,
+    passwordId: string
+  ) {
     this.email = email;
     this.username = username;
     this.password = password;
     this.passwordId = passwordId;
 
-    this.formState = 'Edit'
+    this.formState = 'Edit';
   }
 }

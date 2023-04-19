@@ -37,11 +37,20 @@ export class PasswordListComponent {
     this.loadPasswords();
   }
 
+  resetForm() {
+    this.email = '';
+    this.username = '';
+    this.password = '';
+    this.formState = 'Add new';
+    this.passwordId = '';
+  }
+
   onSubmit(values: object) {
     if (this.formState == 'Add New') {
       this.PasswordManagerService.addPassword(values, this.siteId)
         .then(() => {
           console.log('Password Saved!');
+          this.resetForm();
         })
         .catch((err) => {
           console.log(err);
@@ -54,6 +63,7 @@ export class PasswordListComponent {
       )
         .then(() => {
           console.log('Data Updated');
+          this.resetForm();
         })
         .catch((err) => {
           console.log(err);
@@ -77,5 +87,15 @@ export class PasswordListComponent {
     this.passwordId = passwordId;
 
     this.formState = 'Edit';
+  }
+
+  deletePassword(passwordId: string) {
+    this.PasswordManagerService.deletePassword(this.siteId, passwordId)
+      .then(() => {
+        console.log('Password Deleted');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 }

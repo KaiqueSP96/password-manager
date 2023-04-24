@@ -1,6 +1,7 @@
 import { PasswordManagerService } from './../password-manager.service';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { AES, enc } from 'crypto-js';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -14,7 +15,7 @@ export class PasswordListComponent {
   siteURL!: string;
   siteImageUrl!: string;
 
-  passwordList!: Observable<Array<any>>;
+  passwordList!: Array<any>;
 
   email!: string;
   username!: string;
@@ -22,6 +23,9 @@ export class PasswordListComponent {
   passwordId!: string;
 
   formState: string = 'Add New';
+
+  isSuccess: boolean = false;
+  successMessage!: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -37,6 +41,11 @@ export class PasswordListComponent {
     this.loadPasswords();
   }
 
+  showAlert(message: string) {
+    this.isSuccess = true;
+    this.successMessage = message;
+  }
+
   resetForm() {
     this.email = '';
     this.username = '';
@@ -45,11 +54,14 @@ export class PasswordListComponent {
     this.passwordId = '';
   }
 
-  onSubmit(values: object) {
+  onSubmit(values: any) {
+    const encryptedPassword = this.encryptPassword(values.password);
+    values.password = encryptedPassword;
+
     if (this.formState == 'Add New') {
       this.PasswordManagerService.addPassword(values, this.siteId)
         .then(() => {
-          console.log('Password Saved!');
+          this.showAlert('Data Saved');
           this.resetForm();
         })
         .catch((err) => {
@@ -62,7 +74,7 @@ export class PasswordListComponent {
         values
       )
         .then(() => {
-          console.log('Data Updated');
+          this.showAlert('Data Updated');
           this.resetForm();
         })
         .catch((err) => {
@@ -72,7 +84,9 @@ export class PasswordListComponent {
   }
 
   loadPasswords() {
-    this.passwordList = this.PasswordManagerService.loadPasswords(this.siteId);
+   this.PasswordManagerService.loadPasswords(this.siteId).subscribe(val =>{
+    this.passwordList = val;
+   })
   }
 
   editPassword(
@@ -92,10 +106,27 @@ export class PasswordListComponent {
   deletePassword(passwordId: string) {
     this.PasswordManagerService.deletePassword(this.siteId, passwordId)
       .then(() => {
-        console.log('Password Deleted');
+        this.showAlert('Data delected');
       })
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  encryptPassword(password: string) {
+    const secretKey = 'bPeShVmYq3t6w9z$C&F)J@NcRfTjWnZr';
+    const encryptedPassword = AES.encrypt(password, secretKey).toString();
+    return encryptedPassword;
+  }
+
+  decryptPassword(password: string) {
+    const secretKey = 'bPeShVmYq3t6w9z$C&F)J@NcRfTjWnZr';
+    const decPassword = AES.decrypt(password, secretKey).toString(enc.Utf8);
+    return decPassword;
+  }
+
+  onDecrypt(password: string, index: number) {
+    const decPassword = this.decryptPassword(password);
+    this.passwordList[index].password = decPassword;
   }
 }

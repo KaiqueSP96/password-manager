@@ -9,11 +9,13 @@ import {
   deleteDoc,
 } from '@angular/fire/firestore';
 
+import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
+
 @Injectable({
   providedIn: 'root',
 })
 export class PasswordManagerService {
-  constructor(private firestore: Firestore) {}
+  constructor(private firestore: Firestore, private auth: Auth) {}
 
   addSite(data: object) {
     const dbInstance = collection(this.firestore, 'sites');
@@ -48,14 +50,25 @@ export class PasswordManagerService {
   }
 
   updatePassword(siteId: string, passwordId: string, data: object) {
-    const docInstance = doc(this.firestore, `sites/${siteId}/passwords`, passwordId);
+    const docInstance = doc(
+      this.firestore,
+      `sites/${siteId}/passwords`,
+      passwordId
+    );
     return updateDoc(docInstance, data);
-    
   }
 
-  deletePassword(siteId: string, passwordId:string) {
-    const docInstance = doc(this.firestore, `sites/${siteId}/passwords`, passwordId);
+  deletePassword(siteId: string, passwordId: string) {
+    const docInstance = doc(
+      this.firestore,
+      `sites/${siteId}/passwords`,
+      passwordId
+    );
     return deleteDoc(docInstance);
   }
 
+  //login
+  login(email: string, passowrd: string) {
+    return signInWithEmailAndPassword(this.auth, email, passowrd);
+  }
 }
